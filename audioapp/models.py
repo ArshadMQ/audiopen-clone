@@ -42,11 +42,6 @@ class SavedNote(models.Model):
         return f"{self.username} saved a Note"
 
 
-def generatePara():
-    paragraph_length = random.choice([1, 2, 3])
-    return lorem.paragraphs(paragraph_length)
-
-
 @receiver(post_migrate)
 def create_initial_records(sender, **kwargs):
     if Testimonial.objects.count() == 0:
@@ -57,7 +52,7 @@ def create_initial_records(sender, **kwargs):
                                 "social_platform": fake.company() if fake.boolean(chance_of_getting_true=50) else "",
                                 "platform_handle": fake.user_name() if fake.boolean(chance_of_getting_true=50) else "",
                                 "post_image": fake.image_url() if fake.boolean(chance_of_getting_true=50) else "",
-                                "description": generatePara()
+                                "description": fake.paragraph(nb_sentences=random.randint(5, 10))
                                 })
         objs = [
             Testimonial(
