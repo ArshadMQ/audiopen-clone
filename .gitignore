@@ -1,0 +1,5 @@
+.env
+db.sqlite3
+.idea
+audioapp/__pycache__/
+.DS_Store

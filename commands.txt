@@ -1,0 +1,11 @@
+
+## Commands to check the api using Curl
+# SignUp curl -X POST -H "Content-Type: application/json" -d '{"username": "Arshad", "password": "mypassword", "email": "arshad@gmail.com"}' http://127.0.0.1:8000/api/v1/users/signup
+# SignIn curl -X POST -H "Content-Type: application/json" -d '{"username": "Arshad", "password": "mypassword"}' http://127.0.0.1:8000/api/v1/users/signin
+# SignOut curl -X POST -H "Authorization: Token 14185fff698ba4e010f1b72c3bc325cf96e9f452" http://127.0.0.1:8000/api/v1/users/signout
+
+# List curl -X GET -H "Authorization: Token 14185fff698ba4e010f1b72c3bc325cf96e9f452" http://127.0.0.1:8000/api/v1/comments
+# Create curl -X POST -H "Authorization: Token 14185fff698ba4e010f1b72c3bc325cf96e9f452" -H "Content-Type: application/json" -d '{"username": "Arshad", "post_stars": 3, "platform_name": "twitter",  "platform_handle": "@ArshadMQ", "description": "AudioPen is a perfect example of a small", "post_image": "", "logo": "1pJU"}' http://127.0.0.1:8000/api/v1/comments
+# List By Id curl -X GET -H "Authorization: Token 14185fff698ba4e010f1b72c3bc325cf96e9f452" http://127.0.0.1:8000/api/v1/comments/1
+# delete By id curl -X DELETE -H "Authorization: Token 14185fff698ba4e010f1b72c3bc325cf96e9f452" http://127.0.0.1:8000/api/v1/comments/1
+# Update By id curl -X PUT -H "Authorization: Token 14185fff698ba4e010f1b72c3bc325cf96e9f452" -H "Content-Type: application/json" -d '{"username": "Arshad", "post_stars": 3, "platform_name": "twitter",  "platform_handle": "@ArshadMQ", "description": "AudioPen is a perfect example of a small", "post_image": "", "logo": "skjdgfkjdgfksdj"}' http://127.0.0.1:8000/api/v1/comments/2
