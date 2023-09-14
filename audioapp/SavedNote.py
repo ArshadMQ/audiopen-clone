@@ -23,8 +23,8 @@ class SaveNoteListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        comments = SavedNote.objects.all()
-        serializer = SavedNoteSerializer(comments, many=True)
+        notes = SavedNote.objects.all()
+        serializer = SavedNoteSerializer(notes, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -45,16 +45,16 @@ class SavedNoteDetailView(APIView):
             return None
 
     def get(self, request, pk):
-        comment = self.get_object(pk)
-        if comment:
-            serializer = SavedNoteSerializer(comment)
+        notes = self.get_object(pk)
+        if notes:
+            serializer = SavedNoteSerializer(notes)
             return Response(serializer.data)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk):
-        comment = self.get_object(pk)
-        if comment:
-            serializer = SavedNoteSerializer(comment, data=request.data)
+        notes = self.get_object(pk)
+        if notes:
+            serializer = SavedNoteSerializer(notes, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
@@ -62,9 +62,9 @@ class SavedNoteDetailView(APIView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, pk):
-        comment = self.get_object(pk)
-        if comment:
-            comment.delete()
+        notes = self.get_object(pk)
+        if notes:
+            notes.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_404_NOT_FOUND)
 

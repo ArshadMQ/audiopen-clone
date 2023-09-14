@@ -1,6 +1,6 @@
 from .models import CustomUser
 from rest_framework import serializers
-from .models import Comment, SavedNote
+from .models import Testimonial, SavedNote
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,9 +19,9 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class TestimonialSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Testimonial
         fields = '__all__'
 
 

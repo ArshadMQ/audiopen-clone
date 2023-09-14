@@ -1,6 +1,14 @@
 from django.core.validators import MaxValueValidator
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_migrate
+from django.dispatch import receiver
 from django.db import models
+from faker import Faker
+from lorem_text import lorem
+import random
+
+fake = Faker()
+testimonial = []
 
 
 class CustomUser(AbstractUser):
@@ -10,18 +18,18 @@ class CustomUser(AbstractUser):
         return self.username
 
 
-class Comment(models.Model):
+class Testimonial(models.Model):
     username = models.CharField(max_length=255)
-    logo = models.CharField(max_length=255, null=True, blank=True)
-    post_stars = models.IntegerField(default=0, validators=[MaxValueValidator(5)])
-    platform_name = models.CharField(max_length=255, null=True, blank=True)
+    avatar = models.CharField(max_length=255, null=True, blank=True)
+    rating = models.IntegerField(default=0, validators=[MaxValueValidator(5)])
+    social_platform = models.CharField(max_length=255, null=True, blank=True)
     platform_handle = models.CharField(max_length=255, null=True, blank=True)
     post_image = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.username} comment from {self.platform_name}"
+        return f"{self.username} Shared feedback from {self.social_platform}"
 
 
 class SavedNote(models.Model):
@@ -32,3 +40,36 @@ class SavedNote(models.Model):
 
     def __str__(self):
         return f"{self.username} saved a Note"
+
+
+def generatePara():
+    paragraph_length = random.choice([1, 2, 3])
+    return lorem.paragraphs(paragraph_length)
+
+
+@receiver(post_migrate)
+def create_initial_records(sender, **kwargs):
+    if Testimonial.objects.count() == 0:
+        for _ in range(100):
+            testimonial.append({"username": fake.name(),
+                                "avatar": fake.url() if fake.boolean(chance_of_getting_true=50) else "",
+                                "rating": fake.random_int(min=1, max=5),
+                                "social_platform": fake.company() if fake.boolean(chance_of_getting_true=50) else "",
+                                "platform_handle": fake.user_name() if fake.boolean(chance_of_getting_true=50) else "",
+                                "post_image": fake.image_url() if fake.boolean(chance_of_getting_true=50) else "",
+                                "description": generatePara()
+                                })
+        objs = [
+            Testimonial(
+                username=row['username'],
+                avatar=row['avatar'],
+                rating=row['rating'],
+                social_platform=row['social_platform'],
+                platform_handle=row['platform_handle'],
+                post_image=row['post_image'],
+                description=row['description']
+
+            )
+            for row in testimonial
+        ]
+        Testimonial.objects.bulk_create(objs)
