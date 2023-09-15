@@ -5,9 +5,15 @@ from django.dispatch import receiver
 from django.db import models
 from faker import Faker
 import random
+import os
 
 fake = Faker()
 testimonial = []
+baseUrl = os.getenv("BASE_URL")
+designations = ["Web & Integrations at Coverdash", "Marketing Director", "Entrepreneur, Professor, Author, Activist",
+                "Writer"]
+pixels = [340, 446, 200, 500, 400, 290]
+platform = ["twitter", "instagram"]
 
 
 class CustomUser(AbstractUser):
@@ -46,11 +52,12 @@ def create_initial_records(sender, **kwargs):
     if Testimonial.objects.count() == 0:
         for _ in range(100):
             testimonial.append({"username": fake.name(),
-                                "avatar": fake.url() if fake.boolean(chance_of_getting_true=50) else "",
+                                "avatar": f"{baseUrl}/{random.choice(pixels)}",
                                 "rating": fake.random_int(min=1, max=5),
-                                "social_platform": fake.company() if fake.boolean(chance_of_getting_true=50) else "",
+                                "social_platform": random.choice(platform),
                                 "platform_handle": fake.user_name() if fake.boolean(chance_of_getting_true=50) else "",
-                                "post_image": fake.image_url() if fake.boolean(chance_of_getting_true=50) else "",
+                                "post_image": f"{baseUrl}/{random.choice(pixels)}/{random.choice(pixels)}" if fake.boolean(
+                                    chance_of_getting_true=10) else "",
                                 "description": fake.paragraph(nb_sentences=random.randint(5, 10))
                                 })
         objs = [
@@ -58,8 +65,8 @@ def create_initial_records(sender, **kwargs):
                 username=row['username'],
                 avatar=row['avatar'],
                 rating=row['rating'],
-                social_platform=row['social_platform'] if row['platform_handle'] else "",
-                platform_handle=row['platform_handle'],
+                social_platform=row['social_platform'] if row['platform_handle'] else '',
+                platform_handle=f"@{row['platform_handle']}" if row['platform_handle'] else random.choice(designations),
                 post_image=row['post_image'],
                 description=row['description']
 
