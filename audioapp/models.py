@@ -58,7 +58,7 @@ def create_initial_records(sender, **kwargs):
                 username=row['username'],
                 avatar=row['avatar'],
                 rating=row['rating'],
-                social_platform=row['social_platform'],
+                social_platform=row['social_platform'] if row['platform_handle'] else "",
                 platform_handle=row['platform_handle'],
                 post_image=row['post_image'],
                 description=row['description']
