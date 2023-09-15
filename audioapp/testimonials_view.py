@@ -7,7 +7,6 @@ from .models import Testimonial
 
 
 class TestimonialListCreateView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         testimonials = Testimonial.objects.all()
@@ -15,6 +14,10 @@ class TestimonialListCreateView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
         serializer = TestimonialSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
