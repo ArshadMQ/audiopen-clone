@@ -77,8 +77,9 @@ class GenerateTextView(APIView):
         destination = 'uploads'
         if isinstance(uploaded_file, TemporaryUploadedFile):
             handle_uploaded_file(uploaded_file, destination)
-        ttext = get_Text_from_file(f'{destination}/{fileName}')
+        ttext, original_text = get_Text_from_file(f'{destination}/{fileName}')
         response = {"title": "Voice-to-Text Tool",
+                    "original_text": original_text,
                     "description": ttext,
-                    "timestamp": datetime.now()}
+                    "timestamp": datetime.utcnow().strftime("%b %d, %Y")}
         return Response(status=status.HTTP_200_OK, data=response)
