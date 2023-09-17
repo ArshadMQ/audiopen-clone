@@ -70,7 +70,6 @@ class SavedNoteDetailView(APIView):
 
 
 class GenerateTextView(APIView):
-
     def post(self, request):
         uploaded_file = request.FILES.get('files')
         fileName = uploaded_file.name

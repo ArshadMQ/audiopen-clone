@@ -4,7 +4,7 @@ Please use
 python --version Python > 3.10 & node --version >= v18
 
 
-## Installation
+## Run Django Server
 1. Navigate to the `audiopenclone` directory:
 
     ```commandline
@@ -33,3 +33,20 @@ python --version Python > 3.10 & node --version >= v18
     python manage.py migrate
     python manage.py runserver
     ```
+   
+## Run React Server
+1. Navigate to the `client` directory:
+
+    ```commandline
+    cd client
+    ```
+2. Install node dependencies:
+
+    ```commandline
+    yarn install
+   ```
+
+3. Run dev server for React
+   ```commandline
+   yarn dev
+   ```

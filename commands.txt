@@ -1,7 +1,7 @@
 
 ## Commands to check the api using Curl
 # SignUp curl -X POST -H "Content-Type: application/json" -d '{"username": "Arshad", "password": "mypassword", "email": "arshad@gmail.com"}' http://127.0.0.1:8000/api/v1/users/signup
-# SignIn curl -X POST -H "Content-Type: application/json" -d '{"username": "Arshad", "password": "mypassword"}' http://127.0.0.1:8000/api/v1/users/signin
+# SignIn curl -X POST -H "Content-Type: application/json" -d '{"email": "admin@gmail.com", "password": "admin"}' http://127.0.0.1:8000/api/v1/users/signin
 # SignOut curl -X POST -H "Authorization: Token 14185fff698ba4e010f1b72c3bc325cf96e9f452" http://127.0.0.1:8000/api/v1/users/signout
 
 # List curl -X GET -H "Authorization: Token 14185fff698ba4e010f1b72c3bc325cf96e9f452" http://127.0.0.1:8000/api/v1/testimonial

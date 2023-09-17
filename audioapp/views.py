@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import *
 from .models import *
+from faker import Faker
+fake = Faker()
 
 
 class LandingPage(APIView):
@@ -19,7 +21,11 @@ class LandingPage(APIView):
 
 class SignUpView(APIView):
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        obj = {"username": request.data["email"],
+               "email": request.data["email"],
+               "password": request.data["password"]}
+
+        serializer = UserSerializer(data=obj)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -30,18 +36,24 @@ class SignInView(APIView):
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
+        if 'password' not in request.data or password == "":
+            return Response({'error': 'Please input password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if 'email' not in request.data or email == "":
+            return Response({'error': 'Please input email'}, status=status.HTTP_401_UNAUTHORIZED)
+
         user = None
         if '@' in email:
             try:
                 user = CustomUser.objects.get(email=email)
             except ObjectDoesNotExist:
                 pass
-        if not user:
-            user = authenticate(email=email, password=password)
-
         if user:
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
+            # Use Django's authenticate function to check the password
+            authenticated_user = authenticate(request, username=user.username, password=password)
+            if authenticated_user:
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key}, status=status.HTTP_200_OK)
 
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
