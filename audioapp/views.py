@@ -8,6 +8,7 @@ from rest_framework import status
 from .serializers import *
 from .models import *
 from faker import Faker
+
 fake = Faker()
 
 
@@ -53,7 +54,7 @@ class SignInView(APIView):
             authenticated_user = authenticate(request, username=user.username, password=password)
             if authenticated_user:
                 token, _ = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key}, status=status.HTTP_200_OK)
+                return Response({'token': token.key, "user_id": user.id}, status=status.HTTP_200_OK)
 
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
