@@ -1,4 +1,4 @@
-import { Modal, Typography } from "antd";
+import { Modal } from "antd";
 import styled from "styled-components";
 
 export const ModalContainer = styled(({ screen, ...other }: any) => (<Modal {...other} />))`

@@ -3,7 +3,7 @@ import { Button } from '../..';
 import { AccountPrompt, CustomForm, ForgotPassword, FormInput, PolicyTerms, SignUpHeading } from './styledComponents';
 import { Checkbox, Form } from 'antd';
 import { useAuth } from '../../../context/auth.context';
-import { LOGIN, SIGNUP } from '../../../services/api/auth.service';
+import { LOGIN } from '../../../services/api/auth.service';
 
 
 const LoginIn = (props: any) => {
@@ -11,9 +11,9 @@ const LoginIn = (props: any) => {
   const [form] = Form.useForm();
   const [logInCheck, setLogInCheck] = useState(true);
   const [error, setError] = useState("");
-  const { user, updateUserDetails } = useAuth();
+  const { updateUserDetails } = useAuth();
 
-  const onFinish = async (values: any) => {
+  const onFinish = async () => {
 
     const formData: any = {
       email: form.getFieldValue("email")?.trim(),
@@ -42,9 +42,9 @@ const LoginIn = (props: any) => {
     }
 
     else {
-      const response = await SIGNUP(formData)
-        .then(data => data)
-        .catch(error => error)
+      // const response = await SIGNUP(formData)
+      //   .then(data => data)
+      //   .catch(error => error)
     }
   }
 

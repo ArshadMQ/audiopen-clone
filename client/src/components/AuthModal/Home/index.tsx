@@ -3,11 +3,11 @@ import { AuthHeading, PolicyTerms } from './styledComponents';
 
 interface LoginProps {
   setOpenLogIn?: any;
-  setIsModalOpen?: boolean;
+  setIsModalOpen?: any;
 }
 
 const Home = (props: LoginProps) => {
-  const { setOpenLogIn, setIsModalOpen } = props;
+  const { setOpenLogIn } = props;
   return (
     <>
       <AuthHeading>Sign up or Log in</AuthHeading>

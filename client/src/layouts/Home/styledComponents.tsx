@@ -1,4 +1,4 @@
-import { Anchor, Button, Row, Typography } from "antd";
+import { Row, Typography } from "antd";
 import styled from "styled-components";
 
 export const HeroRow = styled(({ screen, ...other }: any) => (<Row {...other} />))`

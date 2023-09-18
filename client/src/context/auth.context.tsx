@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from 'react'
+import { useContext, createContext, useState } from 'react'
 
 type authContextType = {
     user: any;
@@ -9,7 +9,7 @@ const authContextDefaultValues: authContextType = {
     user: {
         role: null,
     },
-    updateUserDetails: (data: Object) => { },
+    updateUserDetails: (data) => {data},
 };
 
 const AuthContext = createContext(authContextDefaultValues)

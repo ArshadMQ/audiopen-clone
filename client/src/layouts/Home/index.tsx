@@ -5,13 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { AuthModal, Button, FloatingButtons, TestimonialCard, Spinner, SummarizeModal } from '../../components'
 import { AudioBox, AudioContainer, BrandDescription, BrandName, BrandTitle, ButtonRow, CancelLink, CornerButtonsContainer, HeroRow, PlayStopButton, ReadMoreRow, TestimonialRow, Timer, TranscribingContainer, TranscribingText, WaveContainer } from './styledComponents'
 import { BASE_URL } from '../../services/CONSTANTS'
-import { useAuth } from '../../context/auth.context'
 import { GENERATE } from '../../services/api/audio.service'
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 
 const Home = () => {
     // const [isRecording, setIsRecording] = useState(false);
-    const [audioData, setAudioData] = useState<Object | null>(null);
     const [remainingTime, setRemainingTime] = useState(180); // 3 minutes in seconds
     const navigate = useNavigate()
     const [testimonialData, setTestimonialData] = useState([]);
@@ -19,16 +17,11 @@ const Home = () => {
     const [openModal, setOpenModal] = useState(false)
     const [isSummarizing, setIsSummarizing] = useState(false)
     const [summarizeData, setSummarizeData] = useState({})
-    const { user } = useAuth();
     const {
         startRecording,
         stopRecording,
-        togglePauseResume,
         recordingBlob,
         isRecording,
-        isPaused,
-        recordingTime,
-        mediaRecorder
     } = useAudioRecorder();
 
     const addAudioElement = (blob: any) => {
@@ -39,7 +32,7 @@ const Home = () => {
         document.body.appendChild(audio);
         const formData = new FormData();
         formData.append('files', blob);
-        GENERATE(formData, user?.token).then(data => {
+        GENERATE(formData).then(data => {
             setIsSummarizing(true);
             setSummarizeData(data?.data);
             setOpenModal(false)
@@ -149,7 +142,7 @@ const Home = () => {
                 {!isRecording && <FloatingButtons onClick={handleStartRecording} />}
             </HeroRow >
             <TestimonialRow>
-                {testimonialData?.map((element, index) => (
+                {testimonialData?.map((element) => (
                     <Col xxl={5} xl={8} lg={10} md={12} sm={24} xs={24} >
                         <TestimonialCard data={element} />
                     </Col>

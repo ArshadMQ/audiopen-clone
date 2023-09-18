@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
 import { TagButtonRow, Date, FooterButtonsRow, ModalContainer, Summary, TagButton, Title } from './styledComponents';
-import { Col, Image, Row } from 'antd';
+import { Col, Image } from 'antd';
 
 interface ISummarizeModalProps {
     isSummarizing: any
@@ -10,12 +9,12 @@ interface ISummarizeModalProps {
 }
 
 const SummarizeModal = (props: ISummarizeModalProps) => {
-    const { isSummarizing, setIsSummarizing, setSummarizeData, summarizeData } = props;
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { isSummarizing, setIsSummarizing, summarizeData } = props;
+    // const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const showModal = () => {
-        setIsSummarizing(true);
-    };
+    // const showModal = () => {
+    //     setIsSummarizing(true);
+    // };
 
     const handleOk = () => {
         setIsSummarizing(false);
@@ -28,8 +27,6 @@ const SummarizeModal = (props: ISummarizeModalProps) => {
     function audioHandler() {
 
     }
-
-    console.log(summarizeData);
 
     return (
         <ModalContainer

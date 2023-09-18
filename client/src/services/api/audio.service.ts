@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BASE_URL } from '../CONSTANTS';
 
-export const GENERATE = (payload: any, token: string) => {
+export const GENERATE = (payload: any) => {
   const data = axios
     .post(BASE_URL + '/generate', payload, {
       headers: {
