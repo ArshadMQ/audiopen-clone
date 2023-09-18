@@ -9,4 +9,3 @@ export * from './AuthModal/LogIn';
 export * from './AuthModal/Home';
 export * from './Spinner';
 export * from './SummarizeModal';
-export * from './AuthModal/Signup';

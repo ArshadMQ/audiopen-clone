@@ -7,11 +7,9 @@ import { AudioBox, AudioContainer, BrandDescription, BrandName, BrandTitle, Butt
 import { BASE_URL } from '../../services/CONSTANTS'
 import { GENERATE } from '../../services/api/audio.service'
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
-import { useAuth } from '../../context/auth.context'
 import { getLocalStorage } from '../../utils/commonMethods'
 
 const Home = () => {
-    const { user } = useAuth()
     // const [isRecording, setIsRecording] = useState(false);
     const [remainingTime, setRemainingTime] = useState(180); // 3 minutes in seconds
     const navigate = useNavigate()

@@ -53,8 +53,11 @@ const LoginIn = (props: any) => {
           setLogInCheck(true);
           setIsModalOpen(true);
           setError("")
+          data
         })        
-        .catch(error => {setError("")})
+        .catch(error => {setError(""), error})
+      console.log(response);
+      
         
     }
   }
