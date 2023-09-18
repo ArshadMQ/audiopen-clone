@@ -35,7 +35,8 @@ const AuthModal: React.FC = (props: IModalProps) => {
         closeIcon={false}
         centered
       >
-        {openLogIn ? <LoginIn setIsModalOpen={setIsModalOpen} setOpenLogIn={setOpenLogIn} /> : <Home setOpenLogIn={setOpenLogIn} setIsModalOpen={setIsModalOpen} />}
+        {openLogIn ? <LoginIn setIsModal
+        Open={setIsModalOpen} setOpenLogIn={setOpenLogIn} /> : <Home setOpenLogIn={setOpenLogIn} setIsModalOpen={setIsModalOpen} />}
       </ModalContainer>
     </>
   );

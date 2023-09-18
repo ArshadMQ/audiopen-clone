@@ -49,3 +49,11 @@ def get_Text_from_file(filepath):
         return summarized, res['text']
     except Exception as e:
         return "I'm very sorry, but I can't assist with that", ""
+
+
+def generateName():
+    alphabets = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
+                 "u", "v", "w", "x", "y", "z"]
+
+    nameList = ''.join(random.choice(alphabets) for _ in range(6))
+    return nameList

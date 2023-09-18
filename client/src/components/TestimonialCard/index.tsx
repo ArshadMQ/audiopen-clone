@@ -13,7 +13,7 @@ const TestimonialCard = ({ data }: any) => {
                     </AvatarColumn>
                     <ContactColumn span={17}>
                         <Name>{data?.username}</Name>
-                        <Designation>{data?.platform_handle && `@${data?.platform_handle}`}</Designation>
+                        <Designation>{data?.platform_handle}</Designation>
                     </ContactColumn>
                     <SocialIconColumn span={3}>
                         <TwitterOutlined />

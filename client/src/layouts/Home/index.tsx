@@ -7,8 +7,11 @@ import { AudioBox, AudioContainer, BrandDescription, BrandName, BrandTitle, Butt
 import { BASE_URL } from '../../services/CONSTANTS'
 import { GENERATE } from '../../services/api/audio.service'
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
+import { useAuth } from '../../context/auth.context'
+import { getLocalStorage } from '../../utils/commonMethods'
 
 const Home = () => {
+    const { user } = useAuth()
     // const [isRecording, setIsRecording] = useState(false);
     const [remainingTime, setRemainingTime] = useState(180); // 3 minutes in seconds
     const navigate = useNavigate()
@@ -83,8 +86,6 @@ const Home = () => {
         axios.get(`${BASE_URL}/testimonial`).then(response => setTestimonialData(response?.data))
     }, [])
 
-
-
     return (
         <>
             <HeroRow justify={'center'}>
@@ -132,7 +133,8 @@ const Home = () => {
                     <>
                         <BrandDescription>Just hit record. Then start talking.<br />AudioPen will clean things up when you're done.</BrandDescription>
                         <ButtonRow justify={'center'}>
-                            <AuthModal />
+                            {!getLocalStorage('token') ? <AuthModal /> : null}
+                            
                             <Button text='see how it works' textColor='rgba(61, 63, 84, 1)' bgColor='transparent' onClick={() => navigate('/demo')} />
                         </ButtonRow>
                         <Row justify={'center'}>

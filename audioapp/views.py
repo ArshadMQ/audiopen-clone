@@ -8,6 +8,7 @@ from rest_framework import status
 from .serializers import *
 from .models import *
 from faker import Faker
+from .utils import generateName
 
 fake = Faker()
 
@@ -22,10 +23,9 @@ class LandingPage(APIView):
 
 class SignUpView(APIView):
     def post(self, request):
-        obj = {"username": request.data["email"],
+        obj = {"username": generateName(),
                "email": request.data["email"],
                "password": request.data["password"]}
-
         serializer = UserSerializer(data=obj)
         if serializer.is_valid():
             serializer.save()
@@ -50,7 +50,6 @@ class SignInView(APIView):
             except ObjectDoesNotExist:
                 pass
         if user:
-            # Use Django's authenticate function to check the password
             authenticated_user = authenticate(request, username=user.username, password=password)
             if authenticated_user:
                 token, _ = Token.objects.get_or_create(user=user)

@@ -3,7 +3,8 @@ import { Button } from '../..';
 import { AccountPrompt, CustomForm, ForgotPassword, FormInput, PolicyTerms, SignUpHeading } from './styledComponents';
 import { Checkbox, Form } from 'antd';
 import { useAuth } from '../../../context/auth.context';
-import { LOGIN } from '../../../services/api/auth.service';
+import { LOGIN, SIGNUP } from '../../../services/api/auth.service';
+import { setLocalStorage } from '../../../utils/commonMethods';
 
 
 const LoginIn = (props: any) => {
@@ -21,12 +22,17 @@ const LoginIn = (props: any) => {
       confirmPassword: form.getFieldValue("confirmPassword")?.trim()
     };
 
+    if (formData.password != formData.confirmPassword){
+      return setError("Passwords doesn't match.")
+    }
+
     if (logInCheck) {
       const response = await LOGIN(formData)
         .then(data => data)
         .catch(error => error)
 
       if (response?.data?.token) {
+        setLocalStorage('token', response?.data?.token)
         setError("")
         updateUserDetails((prev: any) => {
           return {
@@ -42,9 +48,14 @@ const LoginIn = (props: any) => {
     }
 
     else {
-      // const response = await SIGNUP(formData)
-      //   .then(data => data)
-      //   .catch(error => error)
+      const response = await SIGNUP(formData)
+        .then(({data}) => {
+          setLogInCheck(true);
+          setIsModalOpen(true);
+          setError("")
+        })        
+        .catch(error => {setError("")})
+        
     }
   }
 
@@ -55,18 +66,18 @@ const LoginIn = (props: any) => {
       <CustomForm form={form} layout={'vertical'} onFinish={onFinish}>
         <AccountPrompt style={{ color: 'red' }}>{error}</AccountPrompt>
         <Form.Item name="email">
-          <FormInput placeholder="Email" />
+          <FormInput placeholder="Email" required/>
         </Form.Item>
         <Form.Item
           name="password"
         >
-          <FormInput placeholder="Password" />
+          <FormInput placeholder="Password" type="password" required/>
 
         </Form.Item>
         {!logInCheck ? (
           <>
             <Form.Item name="confirmPassword">
-              <FormInput placeholder="Confirm Password" />
+              <FormInput placeholder="Confirm Password" type="password" required/>
             </Form.Item>
           </>
         ) : (
