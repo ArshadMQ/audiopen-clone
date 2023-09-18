@@ -1,67 +1,66 @@
 import { useState } from 'react';
 import { Button } from '../..';
-import { AccountPrompt, CustomForm, ForgotPassword, FormInput, PolicyTerms, SignUpHeading } from './styledComponents';
+import {
+  AccountPrompt,
+  CustomForm,
+  ForgotPassword,
+  FormInput,
+  PolicyTerms,
+  SignUpHeading,
+} from './styledComponents';
 import { Checkbox, Form } from 'antd';
 import { useAuth } from '../../../context/auth.context';
 import { LOGIN, SIGNUP } from '../../../services/api/auth.service';
 import { setLocalStorage } from '../../../utils/commonMethods';
-
+import { useNavigate } from 'react-router-dom';
 
 const LoginIn = (props: any) => {
   const { setOpenLogIn, setIsModalOpen } = props;
   const [form] = Form.useForm();
   const [logInCheck, setLogInCheck] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const { updateUserDetails } = useAuth();
-
+  const navigate = useNavigate();
   const onFinish = async () => {
-
     const formData: any = {
-      email: form.getFieldValue("email")?.trim(),
-      password: form.getFieldValue("password")?.trim(),
-      confirmPassword: form.getFieldValue("confirmPassword")?.trim()
+      email: form.getFieldValue('email')?.trim(),
+      password: form.getFieldValue('password')?.trim(),
+      confirmPassword: form.getFieldValue('confirmPassword')?.trim(),
     };
 
-    if (formData.password != formData.confirmPassword){
-      return setError("Passwords doesn't match.")
-    }
-
     if (logInCheck) {
-      const response = await LOGIN(formData)
-        .then(data => data)
-        .catch(error => error)
-
-      if (response?.data?.token) {
-        setLocalStorage('token', response?.data?.token)
-        setError("")
-        updateUserDetails((prev: any) => {
-          return {
-            ...prev,
-            token: response?.data?.token
-          }
+      LOGIN(formData)
+        .then(response => {
+          setLocalStorage('token', response?.data?.token);
+          setIsModalOpen((prev: any) => !prev);
+          setOpenLogIn((prev: any) => !prev);
+          setLogInCheck((prev: any) => !prev);
+          setError('');
+          updateUserDetails((prev: any) => {
+            return {
+              ...prev,
+              token: response?.data?.token,
+            };
+          });
         })
-        setIsModalOpen((prev: any) => !prev);
-        setOpenLogIn((prev: any) => !prev);
-      } else {
-        setError(response?.response?.data?.error)
+        .catch(response => setError(response?.data?.error));
+    } else {
+      if (formData.password != formData.confirmPassword) {
+        return setError("Passwords doesn't match.");
       }
-    }
-
-    else {
       const response = await SIGNUP(formData)
-        .then(({data}) => {
+        .then(({ data }) => {
           setLogInCheck(true);
           setIsModalOpen(true);
-          setError("")
-          data
-        })        
-        .catch(error => {setError(""), error})
+          setError('');
+          data;
+        })
+        .catch(error => {
+          setError(''), error;
+        });
       console.log(response);
-      
-        
     }
-  }
-
+  };
 
   return (
     <>
@@ -69,18 +68,19 @@ const LoginIn = (props: any) => {
       <CustomForm form={form} layout={'vertical'} onFinish={onFinish}>
         <AccountPrompt style={{ color: 'red' }}>{error}</AccountPrompt>
         <Form.Item name="email">
-          <FormInput placeholder="Email" required/>
+          <FormInput placeholder="Email" required />
         </Form.Item>
-        <Form.Item
-          name="password"
-        >
-          <FormInput placeholder="Password" type="password" required/>
-
+        <Form.Item name="password">
+          <FormInput placeholder="Password" type="password" required />
         </Form.Item>
         {!logInCheck ? (
           <>
             <Form.Item name="confirmPassword">
-              <FormInput placeholder="Confirm Password" type="password" required/>
+              <FormInput
+                placeholder="Confirm Password"
+                type="password"
+                required
+              />
             </Form.Item>
           </>
         ) : (
@@ -134,5 +134,4 @@ const LoginIn = (props: any) => {
   );
 };
 
-
-export default LoginIn
+export default LoginIn;
